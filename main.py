@@ -23,11 +23,11 @@ class Application:
         # self.frame["height"] = 250
         # self.frame.pack(side="top")
 
-        self.desktopContainer = Frame(master, borderwidth = 1, bg="black")
+        self.desktopContainer = Frame(master, borderwidth = 1, bg="gray")
         self.desktopContainer["pady"] = 10
-        self.desktopContainer["width"] = 300
+        self.desktopContainer["width"] = 200
         self.desktopContainer["height"] = 100
-        self.desktopContainer.pack(side="top")
+        self.desktopContainer.pack(fill="both", expand=False, side="top")
 
         self.botMinimizar = Button(self.desktopContainer, text="Minimizar", command=self.minimizar)
         self.botMinimizar["width"] = 10
