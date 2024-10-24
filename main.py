@@ -118,7 +118,7 @@ class Application:
             self.botApagar["height"] = 1
             self.botApagar.pack(side="right", anchor="ne")
             
-            self.botMinimizar = Button(self.appContainer, text="Minimizar", command=self.abrir_app)
+            self.botMinimizar = Button(self.appContainer, text="Minimizar", command=lambda: self.abrir_app(self.desktopContainer, id))
             self.botMinimizar["width"] = 8
             self.botMinimizar["height"] = 1
             self.botMinimizar.pack(side="right", anchor="ne")
