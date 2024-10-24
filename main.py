@@ -1,6 +1,22 @@
 from tkinter import *
 from tkinter import ttk
 
+class MemGerenciador:
+    def __init(self):
+        self.memoria_grid = []
+        self.memoria_max = 50
+        self.memoria_so = 10
+        self.memoria_delimitador = 20
+
+        # Estrutura
+        # memoria_total = [ [5, 0], [11, 1], [8, 2], [17, 3]]
+        # O primeiro item sendo a memória do sistema, e os demais dos apps
+        # O segundo item dentro da lista representa o app, sendo 0 o SO
+        # https://stackoverflow.com/questions/71586546/create-a-list-of-tuples-with-the-first-position-fixed
+    
+    def alocar(self):
+        pass
+
 class MemAlocada:
     def __init(self, nome, quan_memoria, ativo):
         self.nome = nome
