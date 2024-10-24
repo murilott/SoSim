@@ -73,6 +73,8 @@ class Application:
         self.botApp3["width"] = 5
         self.botApp3.pack(side="left")
 
+        
+
         # self.botApp4 = Button(self.appListContainer, text="App 4", command=lambda: self.abrir_app(self.desktopContainer, 4))
         # self.botApp4["width"] = 5
         # self.botApp4.pack(side="left")
@@ -99,10 +101,28 @@ class Application:
                 app = par[0]
 
         if app:
+            
+                        
             if app.winfo_manager():
                 app.pack_forget()
+                
+                for child in self.appListContainer.winfo_children():
+                    if isinstance(child, Button):
+                        nome = child["text"]
+                
+                        if nome == "App "+str(id):
+                            child.config(bg="red")
+                #minimizado = Frame(root)
+                #minimizado.pack(side="bottom")
             else:
                 app.pack(expand=False, side="left")
+
+                for child in self.appListContainer.winfo_children():
+                    if isinstance(child, Button):
+                        nome = child["text"]
+                
+                        if nome == "App "+str(id):
+                            child.config(bg="white")
         else:
             self.appContainer = Frame(root, borderwidth = 1, bg="lightgray")
             # self.appContainer["pady"] = 5
@@ -113,7 +133,7 @@ class Application:
             self.labTitulo = Label(self.appContainer, text="App "+str(id))
             self.labTitulo.pack(side="left", anchor="ne")
 
-            self.botApagar = Button(self.appContainer, text="Fechar", command=self.fechar)
+            self.botApagar = Button(self.appContainer, text="Fechar", command=lambda: self.fechar(id))
             self.botApagar["width"] = 8
             self.botApagar["height"] = 1
             self.botApagar.pack(side="right", anchor="ne")
@@ -135,8 +155,18 @@ class Application:
     #     else:
     #         self.appContainer.pack(expand=False, side="bottom")
 
-    def fechar(self):
-        pass
+    def fechar(self, id):
+        app = None
+
+        for par in self.app_list:
+            if id == par[1]:
+                app = par
+
+        if app:
+            app[0].destroy()
+            self.app_list.remove(app)
+        else:
+            print("Erro - App não encontrado para fechar")
 
     def minimizar(self): #, event
         self.desktopContainer.pack_forget() if self.desktopContainer.winfo_manager() else self.desktopContainer.pack(anchor=W, padx=5, pady=10)
