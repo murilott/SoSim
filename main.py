@@ -11,7 +11,7 @@ class MemAlocada:
         if not self.ativo:
             self.ativo = True
 
-    def deativar(self):
+    def desativar(self):
         if self.ativo:
             self.ativo = False
 
@@ -37,7 +37,7 @@ class Application:
         self.appListContainer["pady"] = 10
         self.appListContainer["width"] = 250
         self.appListContainer["height"] = 100
-        self.appListContainer.pack(expand=False, side="left")
+        self.appListContainer.pack(expand=False, side="top")
 
         # self.appContainer = Frame(self.desktopContainer, borderwidth = 1, bg="lightgray")
         # # self.appContainer["pady"] = 5
@@ -56,6 +56,10 @@ class Application:
         self.botApp3 = Button(self.appListContainer, text="App 3", command=lambda: self.abrir_app(self.desktopContainer, 3))
         self.botApp3["width"] = 5
         self.botApp3.pack(side="left")
+
+        # self.botApp4 = Button(self.appListContainer, text="App 4", command=lambda: self.abrir_app(self.desktopContainer, 4))
+        # self.botApp4["width"] = 5
+        # self.botApp4.pack(side="left")
 
         # self.labTitulo = Label(self.appContainer, text="App 1 ")
         # self.labTitulo.pack(side="left", anchor="ne")
@@ -82,7 +86,7 @@ class Application:
             if app.winfo_manager():
                 app.pack_forget()
             else:
-                app.pack(expand=False, side="bottom")
+                app.pack(expand=False, side="left")
         else:
             self.appContainer = Frame(root, borderwidth = 1, bg="lightgray")
             # self.appContainer["pady"] = 5
@@ -103,7 +107,7 @@ class Application:
             self.botMinimizar["height"] = 1
             self.botMinimizar.pack(side="right", anchor="ne")
 
-            self.appContainer.pack(expand=False, side="bottom")
+            self.appContainer.pack(expand=False, side="left")
             self.app_list.append([self.appContainer, id])
 
 
