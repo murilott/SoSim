@@ -2,20 +2,31 @@ from tkinter import *
 from tkinter import ttk
 
 class MemGerenciador:
-    def __init(self):
+    def __init__(self, max, mem_so, mem_delimitador):
         self.memoria_grid = []
-        self.memoria_max = 50
-        self.memoria_so = 10
-        self.memoria_delimitador = 20
+        self.memoria_max = max
+        self.memoria_so = mem_so
+        self.memoria_delimitador = mem_delimitador
+
+        self.alocar(mem_so, 0)
+        
 
         # Estrutura
-        # memoria_total = [ [5, 0], [11, 1], [8, 2], [17, 3]]
+        # memoria_grid = [ [5, 0], [11, 1], [8, 2], [17, 3]]
         # O primeiro item sendo a memória do sistema, e os demais dos apps
         # O segundo item dentro da lista representa o app, sendo 0 o SO
         # https://stackoverflow.com/questions/71586546/create-a-list-of-tuples-with-the-first-position-fixed
     
-    def alocar(self):
-        pass
+    def alocar(self, memoria, app):
+        if [memoria, app] not in self.memoria_grid:
+            self.memoria_grid.append([memoria, app])
+        else:
+            index = self.memoria_grid.index([memoria, app])
+            self.memoria_grid[index] = [memoria, app]
+
+    def liberar(self, memoria, app):
+        if [memoria, app] in self.memoria_grid:
+            self.memoria_grid.remove([memoria, app])
 
 class MemAlocada:
     def __init(self, nome, quan_memoria, ativo):
@@ -40,8 +51,10 @@ class Application:
         # self.frame.pack(side="top")
 
         self.app_list = []
+        self.mem_gerenciador = MemGerenciador(70, 10, 20)
 
         self.desktopContainer = Frame(master, borderwidth = 1, bg="gray")
+        self.desktopContainer["padx"] = 20
         self.desktopContainer["pady"] = 20
         self.desktopContainer["width"] = 300
         self.desktopContainer["height"] = 100
@@ -50,16 +63,47 @@ class Application:
 
         self.appListContainer = Frame(master, borderwidth = 1, bg="lightgray")
         self.appListContainer["padx"] = 20
-        self.appListContainer["pady"] = 10
+        self.appListContainer["pady"] = 20
         self.appListContainer["width"] = 250
         self.appListContainer["height"] = 100
         self.appListContainer.pack(expand=False, side="top")
 
-        # self.appContainer = Frame(self.desktopContainer, borderwidth = 1, bg="lightgray")
-        # # self.appContainer["pady"] = 5
-        # self.appContainer["width"] = 500
-        # self.appContainer["height"] = 200
-        # self.appContainer.pack_propagate(False)
+        self.memContainer = Frame(master, borderwidth = 1, bg="lightgray")
+        # self.memContainer["padx"] = 20
+        # self.memContainer["pady"] = 10
+        self.memContainer["width"] = 300
+        self.memContainer["height"] = 300
+
+
+
+        # mem_total_atual = 0
+        # for m in self.mem_gerenciador.memoria_grid:
+        #     print(m)
+        #     mem_total_atual += m[0]
+
+        # tamanho_total = self.mem_gerenciador.memoria_max
+        # # cells_y = self.mem_gerenciador.memoria_max
+
+        # offset = 10
+        # tamanho_cel = 15
+
+        # self.memoria = Canvas(self.memContainer, width=tamanho_total+offset, height=tamanho_total+offset)
+
+        # for x in range(offset, mem_total_atual//2, tamanho_cel+2):
+        #     for y in range(offset, mem_total_atual//2, tamanho_cel+2):
+        #         self.pagina = self.memoria.create_rectangle(x, y, x+tamanho_cel, y+tamanho_cel, fill="lightblue", outline = 'blue')
+        #         # self.pagina.grid(row=i, column=j)
+
+        # self.botMem = Button(self.memContainer, text="Memória", command=lambda: print(self.mem_gerenciador.memoria_grid, mem_total_atual)) #self.desktopContainer, 1
+        # self.botMem["width"] = 10
+        # self.botMem.grid(row=0, column=0)
+
+        # self.memoria.grid(row=1, column=0)
+        # self.memoria.pack()
+
+        
+                
+        self.memContainer.pack(pady=20, expand=False, side="top")
 
         self.botApp1 = Button(self.appListContainer, text="App 1", command=lambda: self.abrir_app(self.desktopContainer, 1)) #self.desktopContainer, 1
         self.botApp1["width"] = 5
@@ -73,36 +117,41 @@ class Application:
         self.botApp3["width"] = 5
         self.botApp3.pack(side="left")
 
-        
 
-        # self.botApp4 = Button(self.appListContainer, text="App 4", command=lambda: self.abrir_app(self.desktopContainer, 4))
-        # self.botApp4["width"] = 5
-        # self.botApp4.pack(side="left")
+    def att_memoria(self):
+        mem_total_atual = 0
+        for m in self.mem_gerenciador.memoria_grid:
+            print(m)
+            mem_total_atual += m[0]
 
-        # self.labTitulo = Label(self.appContainer, text="App 1 ")
-        # self.labTitulo.pack(side="left", anchor="ne")
+        tamanho_total = self.mem_gerenciador.memoria_max
+        # cells_y = self.mem_gerenciador.memoria_max
 
-        # self.botApagar = Button(self.appContainer, text="Fechar", command=self.fechar)
-        # self.botApagar["width"] = 8
-        # self.botApagar["height"] = 1
-        # self.botApagar.pack(side="right", anchor="ne")
-        
-        # self.botMinimizar = Button(self.appContainer, text="Minimizar", command=self.abrir_app)
-        # self.botMinimizar["width"] = 8
-        # self.botMinimizar["height"] = 1
-        # self.botMinimizar.pack(side="right", anchor="ne")
+        offset = 10
+        tamanho_cel = 15
 
+        self.memoria = Canvas(self.memContainer, width=tamanho_total+offset, height=tamanho_total+offset)
+
+        for x in range(offset, mem_total_atual//2, tamanho_cel+2):
+            for y in range(offset, mem_total_atual//2, tamanho_cel+2):
+                self.pagina = self.memoria.create_rectangle(x, y, x+tamanho_cel, y+tamanho_cel, fill="lightblue", outline = 'blue')
+                # self.pagina.grid(row=i, column=j)
+
+        self.botMem = Button(self.memContainer, text="Memória", command=lambda: print(self.mem_gerenciador.memoria_grid, mem_total_atual)) #self.desktopContainer, 1
+        self.botMem["width"] = 10
+        self.botMem.grid(row=0, column=0)
+
+        self.memoria.grid(row=1, column=0)
 
     def abrir_app(self, root, id): #, root, app
         app = None
 
+        # Procura na lista de apps abertos
         for par in self.app_list:
             if id == par[1]:
                 app = par[0]
 
         if app:
-            
-                        
             if app.winfo_manager():
                 app.pack_forget()
                 
@@ -112,10 +161,8 @@ class Application:
                 
                         if nome == "App "+str(id):
                             child.config(bg="red")
-                #minimizado = Frame(root)
-                #minimizado.pack(side="bottom")
             else:
-                app.pack(expand=False, side="left")
+                app.pack(expand=False, side="left") #padx=10, 
 
                 for child in self.appListContainer.winfo_children():
                     if isinstance(child, Button):
@@ -143,17 +190,10 @@ class Application:
             self.botMinimizar["height"] = 1
             self.botMinimizar.pack(side="right", anchor="ne")
 
-            self.appContainer.pack(expand=False, side="left")
+            self.mem_gerenciador.alocar(5, 1)
+
+            self.appContainer.pack(expand=False, side="left") #padx=10, 
             self.app_list.append([self.appContainer, id])
-
-
-        
-
-    # def abrir_app(self, root, id): #, root, app
-    #     if self.appContainer.winfo_manager():
-    #         self.appContainer.pack_forget()
-    #     else:
-    #         self.appContainer.pack(expand=False, side="bottom")
 
     def fechar(self, id):
         app = None
@@ -168,35 +208,9 @@ class Application:
         else:
             print("Erro - App não encontrado para fechar")
 
-    def minimizar(self): #, event
-        self.desktopContainer.pack_forget() if self.desktopContainer.winfo_manager() else self.desktopContainer.pack(anchor=W, padx=5, pady=10)
-
-    def minimizar2(self): #, event
-        if self.msg["text"] == "Primeiro widget":
-            self.msg["text"] = "O botão recebeu um clique"
-        else:
-            self.msg["text"] = "Primeiro widget"
-
-        # self.msg = Label(self.frame, text="Primeiro widget")
-        # self.msg.pack(side="top")
-
-        # self.sair = Button(self.frame, text="Sair", command=self.frame.quit)
-        # self.sair.pack(side="right")
-
-        # # self.outro = Button(self.frame, text="Abrir", command=self.mudarTexto)
-        # self.outro = Button(self.frame, text="Abrir")
-        # self.outro.bind("<Button-1>", self.mudarTexto)
-        # self.outro.pack(side="bottom")
-    
-    # def mudarTexto(self, event): #, event
-    #     if self.msg["text"] == "Primeiro widget":
-    #         self.msg["text"] = "O botão recebeu um clique"
-    #     else:
-    #         self.msg["text"] = "Primeiro widget"
-
-
 root = Tk()
 # root["width"] = 250
 # root["height"] = 250
-Application(root)
+app = Application(root)
+app.att_memoria()
 root.mainloop()
