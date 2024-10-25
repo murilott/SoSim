@@ -123,12 +123,13 @@ class Application:
         for m in self.mem_gerenciador.memoria_grid:
             print(m)
             mem_total_atual += m[0]
+        # mem_total_atual = 200
 
         tamanho_total = self.mem_gerenciador.memoria_max
         # cells_y = self.mem_gerenciador.memoria_max
 
         offset = 10
-        tamanho_cel = 15
+        tamanho_cel = 30
 
         self.memoria = Canvas(self.memContainer, width=tamanho_total+offset, height=tamanho_total+offset)
 
@@ -137,7 +138,7 @@ class Application:
                 self.pagina = self.memoria.create_rectangle(x, y, x+tamanho_cel, y+tamanho_cel, fill="lightblue", outline = 'blue')
                 # self.pagina.grid(row=i, column=j)
 
-        self.botMem = Button(self.memContainer, text="Memória", command=lambda: print(self.mem_gerenciador.memoria_grid, mem_total_atual)) #self.desktopContainer, 1
+        self.botMem = Button(self.memContainer, text="Memória", command=lambda: print(self.mem_gerenciador.memoria_grid, mem_total_atual//2)) #self.desktopContainer, 1
         self.botMem["width"] = 10
         self.botMem.grid(row=0, column=0)
 
@@ -191,6 +192,7 @@ class Application:
             self.botMinimizar.pack(side="right", anchor="ne")
 
             self.mem_gerenciador.alocar(5, 1)
+            self.att_memoria()
 
             self.appContainer.pack(expand=False, side="left") #padx=10, 
             self.app_list.append([self.appContainer, id])
