@@ -25,13 +25,26 @@ class MemGerenciador:
             self.memoria_grid[index] = [memoria, app]
 
     def liberar(self, memoria, app):
-        for par in self.memoria.grid:
-            if app in par:
-                if memoria == par[0]:
-                    self.memoria_grid.remove([memoria, app])
-                elif memoria < par[0]:
-                    index = self.memoria_grid.index([memoria, app])
-                    self.memoria_grid[index] = [memoria, app]
+        if [memoria, app] in self.memoria_grid:
+            if memoria == par[0]:
+                print("b")
+                self.memoria_grid.remove([memoria, app])
+            elif memoria < par[0]:
+                print("c")
+                index = self.memoria_grid.index([memoria, app])
+                self.memoria_grid[index] = [memoria, app]
+
+            
+##        for par in self.memoria_grid:
+##            print(par[1], app)
+##            if app in par:
+##                if memoria == par[0]:
+##                    print("b")
+##                    self.memoria_grid.remove([memoria, app])
+##                elif memoria < par[0]:
+##                    print("c")
+##                    index = self.memoria_grid.index([memoria, app])
+##                    self.memoria_grid[index] = [memoria, app]
         # if [memoria, app] in self.memoria_grid:
         #     self.memoria_grid.remove([memoria, app])
 
@@ -140,8 +153,8 @@ class Application:
 
         self.memoria = Canvas(self.memContainer, width=tamanho_total+offset, height=tamanho_total+offset)
 
-        for x in range(offset, mem_total_atual//2, tamanho_cel+2):
-            for y in range(offset, mem_total_atual//2, tamanho_cel+2):
+        for x in range(offset, tamanho_total//2, tamanho_cel+2):
+            for y in range(offset, tamanho_total//2, tamanho_cel+2):
                 self.pagina = self.memoria.create_rectangle(x, y, x+tamanho_cel, y+tamanho_cel, fill="lightblue", outline = 'blue')
                 # self.pagina.grid(row=i, column=j)
 
@@ -214,6 +227,7 @@ class Application:
         if app:
             app[0].destroy()
             self.app_list.remove(app)
+            self.mem_gerenciador.liberar(5, app)
         else:
             print("Erro - App não encontrado para fechar")
 
